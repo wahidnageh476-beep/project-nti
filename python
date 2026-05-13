@@ -1,0 +1,53 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.preprocessing import LabelEncoder
+import joblib
+file_path = "/content/presentation1.xlsx"
+sheet_name = 'vw_ChurnData'
+data = pd.read_excel(file_path, sheet_name=sheet_name)
+print(data.head())
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# إعدادات عامة
+plt.rcParams['figure.figsize'] = (10, 6)
+sns.set_theme(style='whitegrid')
+
+# 1. توزيع Customer Status (Churned vs Stayed)
+plt.figure()
+data['Customer_Status'].value_counts().plot(kind='bar', color=['#2ecc71', '#e74c3c'])
+plt.title('Customer Churn Status')
+plt.xlabel('Status')
+plt.ylabel('Count')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+
+# 2. توزيع الجنس
+plt.figure()
+data['Gender'].value_counts().plot(kind='pie', autopct='%1.1f%%', colors=['#3498db', '#e91e63'])
+plt.title('Gender Distribution')
+plt.ylabel('')
+plt.show()
+
+# 3. توزيع العمر
+plt.figure()
+sns.histplot(data['Age'], bins=20, color='#3498db', kde=True)
+plt.title('Age Distribution')
+plt.xlabel('Age')
+plt.ylabel('Count')
+plt.show()
+# Top 10 States by Churn
+plt.figure(figsize=(12, 6))
+churn_by_state = data[data['Customer_Status'] == 'Churned']['State'].value_counts().head(10)
+sns.barplot(x=churn_by_state.values, y=churn_by_state.index, palette='Reds_r')
+plt.title('Top 10 States by Churn')
+plt.xlabel('Number of Churned Customers')
+plt.ylabel('State')
+plt.tight_layout()
+plt.show()
